@@ -1,0 +1,65 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer utilities {
+
+}
+
+@layer components {
+  .auth-form {
+    @apply space-y-8 flex justify-center items-center w-full h-full
+  }
+  .auth-form-heading {
+    @apply font-bold text-2xl mb-8
+  }
+  .form-input {
+    @apply w-full text-sm bg-gray-100 border border-[#E0E0E9] rounded-lg px-4 py-3 h-12 shadow-sm placeholder-[#A1A4A9] focus:outline-none focus:ring-1 focus:ring-gray-200 ring-offset-1
+  }
+  .fixed-auth {
+    @apply hidden md:pt-20 min-h-screen md:ps-20 lg:block md:w-1/2 rounded-tr-[100px] rounded-br-[100px] bg-[#F0F4FC]
+  }
+  .main-btn {
+    @apply bg-main-c text-white w-full rounded-[20px] h-14 hover:bg-dark-blue transition-all duration-500
+  }
+  .icon {
+    @apply w-16 h-16 bg-white hover:-translate-y-1 transition-all duration-300 rounded-2xl border border-[#E0E0E9] flex justify-center items-center cursor-pointer
+  }
+}
+
+
+*, html {
+  font-family: "Poppins", sans-serif;
+}
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  margin-top: 32px;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #E7E7E7;
+  }
+
+  span {
+    padding: 0 10px;
+    color: #6C737F; 
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+.icon {
+  box-shadow: 0px 18px 30px 0 #4461F21C;
+}
+
+
+  
