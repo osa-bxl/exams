@@ -1,26 +1,64 @@
 <div class="auth-form w-full">
-    <div class="w-[410px]">  <!-- Added w-full and text-center -->
+    <div class="w-[410px]"> 
         <h2 class="auth-form-heading"> Sign in </h2>
-
-        <form class="space-y-8">      
+        <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-8">      
             <div>
-                <input type="email" placeholder="Email" class="form-input w-full" readonly onfocus="this.removeAttribute('readonly')">   
+                <input formControlName="email" type="email" placeholder="Email" class="form-input w-full" readonly onfocus="this.removeAttribute('readonly')">
+                @if (loginForm.get('email')?.errors && loginForm.get('email')?.touched) {
+                    <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                            @if (loginForm.get('email')?.getError('required')) {
+                                <span> Email address is required</span>
+                            }
+                            @if (loginForm.get('email')?.getError('email')) {
+                                <span> Invalid email format.</span>
+                            }
+                        </div>
+                    </div>
+                }   
             </div>
             <div class="relative flex flex-col">
-                <input type="password" placeholder="Password" class="form-input">
-                <span class="absolute right-3 top-3 text-[#A1A4A9] cursor-pointer"><i class="fa fa-eye"></i></span>        
+                <input formControlName="password" [type]="hidePassword ? 'text': 'password'" placeholder="Password" class="form-input">
+                @if (loginForm.get('password')?.errors && loginForm.get('password')?.touched) {
+                    <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                            @if (loginForm.get('password')?.getError('required')) {
+                                <span> Password is required</span>
+                            }
+                            @if (loginForm.get('password')?.getError('pattern')) {
+                                <span> Password must be :</span>
+                                <ul class="list-disc ps-5">
+                                    <li>At least 8 characters long</li>
+                                    <li>Includes at least one uppercase, one lowercase letter, one number, and one special character</li>
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <span class="absolute right-4 top-3">
+                    @if(hidePassword) {
+                        <span> <i (click)="togglePassword()" class="fa fa-eye text-[#949BA5] text-lg cursor-pointer" ></i> </span>
+                    }@else {<span> <i (click)="togglePassword()" class="fa fa-eye-slash text-[#949BA5] text-lg cursor-pointer" ></i> </span>}
+                    
+                </span>
                 <p class="mt-4 self-end">
                     <a routerLink="/auth/forgot-password" class="text-main-c">Recover password?</a>
                 </p>
             </div>   
+            @if (apiError) {
+                <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                    <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                         <span> {{apiError}}</span>                  
+                    </div>
+                </div>
+            }
             <div class="mt-10">
-                <button class="main-btn">Sign in</button>
+                <button [disabled]="loginForm.invalid || isLoading" type="submit" class="main-btn">
+                    Sign in @if (isLoading) {<span> <i class="fas fa-spin fa-spinner text-lg"></i> </span>}
+                </button>
             </div>
-        </form>
- 
-        <div class="separator">
-            <span>Or Continue with</span>
-        </div>
+        </form>      
         <app-social-auth></app-social-auth>
     </div>
 </div>

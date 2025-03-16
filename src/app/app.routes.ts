@@ -9,4 +9,5 @@ export const routes: Routes = [
         {path: "reset-password", loadComponent: ()=> import('./core/pages/reset-password/reset-password.component').then(c=> c.ResetPasswordComponent)},    
         {path: "verify-code", loadComponent: ()=> import('./core/pages/verify-code/verify-code.component').then(c=> c.VerifyCodeComponent)},    
     ]},
+    {path: '', loadComponent: ()=> import('../app/feature/pages/dashboard/dashboard.component').then(c=> c.DashboardComponent)}
 ];

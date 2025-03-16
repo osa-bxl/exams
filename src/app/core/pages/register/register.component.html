@@ -1,36 +1,162 @@
 <div class="auth-form w-full">
-    <div class="w-[410px]">  <!-- Added w-full and text-center -->
+    <div class="w-[410px]"> 
         <h2 class="auth-form-heading"> Sign up </h2>
-
-        <form class="space-y-8">
+        <form [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-8">
+            <!-- @let fnameControl = registerForm.get('firstname');
+            @let lnameControl = registerForm.get('lastname');
+            @let emailControl = registerForm.get('email');
+            @let passwordControl = registerForm.get('password'); -->
+            <!-- @let phoneControl = registerForm.get('phone'); -->
             <div>
-                <input type="text" placeholder="First Name" class="form-input w-full">
+                <input formControlName="username" type="text" placeholder="UserName" class="form-input w-full">
+                @if (registerForm.get('username')?.errors && registerForm.get('username')?.touched) {
+                    <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                            @if (registerForm.get('username')?.getError('required')) {
+                                <span> Username is required</span>
+                            }
+                            @if (registerForm.get('username')?.getError('minlength')) {
+                                <span> Username must be at least 4 characters and unique.</span>
+                            }
+                        </div>
+                    </div>
+                }
             </div>              
             <div>
-                <input type="text" placeholder="Last Name" class="form-input w-full"> 
-            </div>       
+                <input formControlName="firstName" type="text" placeholder="First Name" class="form-input w-full">
+                @if (registerForm.get('firstName')?.errors && registerForm.get('firstName')?.touched) {
+                    <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                            @if (registerForm.get('firstName')?.getError('required')) {
+                                <span> First name is required</span>
+                            }
+                            @if (registerForm.get('firstName')?.getError('minlength')) {
+                                <span> First name must be at least 4 characters.</span>
+                            }
+                            @if (registerForm.get('firstName')?.getError('pattern')) {
+                                <span> First name should only contain letters (a-z, A-Z) without spaces or special characters.</span>
+                            }
+                        </div>
+                    </div>
+                } 
+            </div> 
             <div>
-                <input type="email" placeholder="Email" class="form-input w-full" readonly onfocus="this.removeAttribute('readonly')">   
+                <input formControlName="lastName" type="text" placeholder="Last Name" class="form-input w-full">
+                @if (registerForm.get('lastName')?.errors && registerForm.get('lastName')?.touched) {
+                    <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                            @if (registerForm.get('lastName')?.getError('required')) {
+                                <span> Last name is required</span>
+                            }
+                            @if (registerForm.get('lastName')?.getError('minlength')) {
+                                <span> Last name must be at least 4 characters.</span>
+                            }
+                            @if (registerForm.get('lastName')?.getError('pattern')) {
+                                <span> Last name should only contain letters (a-z, A-Z) without spaces or special characters.</span>
+                            }
+                        </div>
+                    </div>
+                } 
+            </div>  
+
+            <div>
+                <input formControlName="email" type="email" placeholder="Email" class="form-input w-full" readonly onfocus="this.removeAttribute('readonly')">   
+                @if (registerForm.get('email')?.errors && registerForm.get('email')?.touched) {
+                    <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                            @if (registerForm.get('email')?.getError('required')) {
+                                <span> Email address is required</span>
+                            }
+                            @if (registerForm.get('email')?.getError('email')) {
+                                <span> Invalid email format.</span>
+                            }
+                        </div>
+                    </div>
+                }
             </div>
             <div class="relative">
-                <input type="password" placeholder="Password" class="form-input">
-                <span class="absolute right-3 top-3 text-[#A1A4A9] cursor-pointer"><i class="fa fa-eye"></i></span>        
+                <input formControlName="password" [type]="hidePassword ? 'text': 'password' " placeholder="Password" class="form-input">
+                <span class="absolute right-4 top-3">
+                    @if(hidePassword) {
+                        <span> <i (click)="togglePassword()" class="fa fa-eye text-[#949BA5] text-lg cursor-pointer" ></i> </span>
+                    }@else {<span> <i (click)="togglePassword()" class="fa fa-eye-slash text-[#949BA5] text-lg cursor-pointer" ></i> </span>}
+                    
+                </span>
+                @if (registerForm.get('password')?.errors && registerForm.get('password')?.touched) {
+                    <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                            @if (registerForm.get('password')?.getError('required')) {
+                                <span> Password is required</span>
+                            }
+                            @if (registerForm.get('password')?.getError('pattern')) {
+                                <span> Password must be :</span>
+                                <ul class="list-disc ps-5">
+                                    <li>At least 8 characters long</li>
+                                    <li>Includes at least one uppercase, one lowercase letter, one number, and one special character</li>
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                }       
             </div>  
             <div class="relative flex flex-col">                 
-                <input type="password" placeholder="Confirm Password" class="form-input"> 
-                <span class="absolute right-3 top-3 text-[#A1A4A9] cursor-pointer"><i class="fa fa-eye"></i></span>         
-                <p class="mt-4 self-center font-medium">
+                <input formControlName="rePassword" [type]="hidePassword ? 'text': 'password' " placeholder="Confirm Password" class="form-input"> 
+                <span class="absolute right-4 top-3">
+                    @if(hidePassword) {
+                        <span> <i (click)="togglePassword()" class="fa fa-eye text-[#949BA5] text-lg cursor-pointer" ></i> </span>
+                    }@else {<span> <i (click)="togglePassword()" class="fa fa-eye-slash text-[#949BA5] text-lg cursor-pointer" ></i> </span>}
+                    
+                </span>
+              
+                    @if (registerForm.getError('missMatch') && registerForm.get('rePassword')?.touched) {
+                        <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <i class="fa-solid fa-circle-info"></i> &nbsp;  <span>Confirm password doesn't match the password.</span>
+                        </div>
+                    }
+                    @if (registerForm.get('rePassword')?.getError('required') && registerForm.get('rePassword')?.touched) {
+                        <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <i class="fa-solid fa-circle-info"> </i> &nbsp;  <span>Confirm password is required.</span>
+                        </div>
+                        
+                    } 
+                <span class="absolute right-4 top-3">
+                    @if(hidePassword) {
+                        <span> <i (click)="togglePassword()" class="fa fa-eye text-[#A1A4A9] text-lg cursor-pointer" ></i> </span>
+                    }@else {<span> <i (click)="togglePassword()" class="fa fa-eye-slash text-[#949BA5] text-lg cursor-pointer" ></i> </span>}
+                    
+                </span>      
+            </div> 
+            <div class="relative flex flex-col">
+                <input formControlName="phone" type="tel" placeholder="Phone number" class="form-input w-full">
+                @if (registerForm.get('phone')?.errors && registerForm.get('phone')?.touched) {
+                    <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                            @if (registerForm.get('phone')?.getError('required')) {
+                                <span> Phone number is required</span>
+                            }
+                            @if (registerForm.get('phone')?.getError('pattern')) {
+                                <span> Only Egyptian phone numbers are accepted.</span>
+                            }
+                        </div>
+                    </div>
+                }
+                <p class="mt-4 self-end">
                     Already have an account? <a routerLink="/auth/login" class="text-main-c">Login</a>
                 </p>
-            </div>   
+                @if (apiError) {
+                    <div class="flex items-center py-4 px-2 mb-2 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <div class="font-medium"><i class="fa-solid fa-circle-info"></i> 
+                             <span> {{apiError}}</span>                  
+                        </div>
+                    </div>
+                }
+            </div>  
             <div class="mt-10">
-                <button class="main-btn">Create Account</button>
+                <button [disabled]="registerForm.invalid || isLoading" type="submit" class="main-btn">
+                    Create Account @if (isLoading) {<span> <i class="fas fa-spin fa-spinner text-lg"></i> </span>}
+                </button>
             </div>
         </form>
- 
-        <div class="separator">
-            <span>Or Continue with</span>
-        </div>
         <app-social-auth></app-social-auth>
     </div>
 </div>
