@@ -20,6 +20,7 @@ export class ForgotPasswordComponent {
   private readonly _authApiService = inject(AuthApiService);
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _toastr= inject(ToastrService);
+  private readonly _router= inject(Router);
 
   forgotPasswordForm: FormGroup = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
@@ -31,8 +32,10 @@ export class ForgotPasswordComponent {
     .pipe(takeUntilDestroyed(this._destroyRef)).subscribe({
       next: (res) => {
         this.isLoading = false;
-        this._toastr.success('Check Your Email Address', 'Success!');
+        this._toastr.success('Please, Check Your Email or junk emails', 'Success!');
         this.successMessage = `${res.info}` ;
+        this._router.navigate(['/auth/verify-code'])
+        
       },
       error: (err) => {
         this.isLoading = false;

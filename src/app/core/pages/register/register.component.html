@@ -104,8 +104,7 @@
                 <span class="absolute right-4 top-3">
                     @if(hidePassword) {
                         <span> <i (click)="togglePassword()" class="fa fa-eye text-[#949BA5] text-lg cursor-pointer" ></i> </span>
-                    }@else {<span> <i (click)="togglePassword()" class="fa fa-eye-slash text-[#949BA5] text-lg cursor-pointer" ></i> </span>}
-                    
+                    }@else {<span> <i (click)="togglePassword()" class="fa fa-eye-slash text-[#949BA5] text-lg cursor-pointer" ></i> </span>}                    
                 </span>
               
                     @if (registerForm.getError('missMatch') && registerForm.get('rePassword')?.touched) {

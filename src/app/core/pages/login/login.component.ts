@@ -35,7 +35,6 @@ export class LoginComponent {
       },
       error: (err)=> {
         this.isLoading = false;
-        console.log(err);
         this.apiError = `${err.error.message}`
       }
     })

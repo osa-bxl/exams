@@ -39,13 +39,11 @@ export class RegisterComponent {
       .pipe(takeUntilDestroyed(this._destroyRef)).subscribe({
         next: (res)=> {
           this.isLoading = true;
-          console.log(res);
           this._toastr.success('Registered successfully', 'Success!');
-          this._router.navigate(['/auth/login'])
+          this._router.navigate(['/auth/login'])          
         },
         error: (err)=> {
           this.isLoading = false;
-          console.log(err.error.message);
           this.apiError = `${err.error.message}`
         }
       })

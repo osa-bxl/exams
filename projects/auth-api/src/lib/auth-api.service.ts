@@ -7,6 +7,8 @@ import { AuthAPIAdaptorService } from './adaptor/auth-api.adaptor';
 import { LoginAPIData, LoginRes } from './interface/loginRes';
 import { RegisterRes, RegisterAPIData } from './interface/registerRes';
 import { ForgotPasswordAPIData, ForgotPasswordRes } from './interface/forgotPasswordRes';
+import { VerifyCodeAPIData, VerifyCodeRes } from './interface/verifyRes';
+import { ResetPasswordAPIData, ResetPasswordRes } from './interface/resetRes';
 
 
 @Injectable({
@@ -21,7 +23,7 @@ export class AuthApiService implements AuthAPI {
 
    login(data: LoginAPIData): Observable<LoginRes> {
     return this._httpClient.post(AuthEndPoint.LOGIN, data).pipe(
-      map((res: any)=> this._authAPIAdaptorService.adapt(res)),
+      map((res: any)=> this._authAPIAdaptorService.adaptLogin(res)),
       catchError((err) => throwError(() => err))
     )
   }
@@ -35,5 +37,19 @@ export class AuthApiService implements AuthAPI {
 
   forgotPassword(data: ForgotPasswordAPIData): Observable<ForgotPasswordRes> {
     return this._httpClient.post<ForgotPasswordRes>(AuthEndPoint.FORGOT_PASSWORD, data);
+  }
+
+  verifyCode(data: VerifyCodeAPIData): Observable<VerifyCodeRes> {
+    return this._httpClient.post<VerifyCodeRes>(AuthEndPoint.VERIFY_CODE, data).pipe(
+      map((res: any) => this._authAPIAdaptorService.adaptVerifyCode(res)),
+      catchError((err) => throwError(() => err))
+    );
+  }
+
+  resetPassword(data: ResetPasswordAPIData): Observable<ResetPasswordRes> {
+    return this._httpClient.put<ResetPasswordRes>(AuthEndPoint.RESET_PASSWORD, data).pipe(
+      map((res: any) => this._authAPIAdaptorService.adaptResetPassword(res)),
+      catchError((err) => throwError(() => err))
+    );
   }
 }
